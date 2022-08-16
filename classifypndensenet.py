@@ -33,7 +33,7 @@ from PIL import Image
 import torch
 from torchvision.models import DenseNet
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import time
 import cv2
 import math
