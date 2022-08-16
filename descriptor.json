@@ -1,0 +1,164 @@
+{
+  "name": "classify_PN_DenseNet",
+  "description": "Classification of nucleus to positive or negative and followed by Negative, Weak, Moderate and Strong for class positive using DenseNet",
+  "container-image": {
+    "image": "mizjaggy18/s_classify_pn_densenet",
+    "type": "singularity"
+  },
+  "command-line": "echo [CYTOMINE_HOST] [CYTOMINE_PUBLIC_KEY] [CYTOMINE_PRIVATE_KEY] [CYTOMINE_ID_PROJECT] [CYTOMINE_ID_SOFTWARE] [CYTOMINE_ID_IMAGES] [CYTOMINE_ID_ANNOTATION_JOB] [CYTOMINE_ID_USER_JOB] [CYTOMINE_ID_C0_TERM] [CYTOMINE_ID_C1_TERM] [CYTOMINE_ID_C2_TERM] [CYTOMINE_ID_C3_TERM] [CYTOMINE_TH_SET] [CYTOMINE_ROI_TYPE]",
+  "inputs": [
+    {
+      "id": "cytomine_host",
+      "value-key": "[@ID]",
+      "command-line-flag": "--@id",
+      "name": "Cytomine host",
+      "set-by-server": true,
+      "optional": false,
+      "type": "String"
+    },
+    {
+      "id": "cytomine_public_key",
+      "value-key": "[@ID]",
+      "command-line-flag": "--@id",
+      "name": "Cytomine public key",
+      "set-by-server": true,
+      "optional": false,
+      "type": "String"
+    },
+    {
+      "id": "cytomine_private_key",
+      "value-key": "[@ID]",
+      "command-line-flag": "--@id",
+      "name": "Cytomine private key",
+      "set-by-server": true,
+      "optional": false,
+      "type": "String"
+    },
+    {
+      "id": "cytomine_id_project",
+      "value-key": "[@ID]",
+      "command-line-flag": "--@id",
+      "name": "Cytomine project ID",
+      "set-by-server": true,
+      "optional": false,
+      "type": "Number"
+    },
+    {
+      "id": "cytomine_id_software",
+      "value-key": "[@ID]",
+      "command-line-flag": "--@id",
+      "name": "Cytomine software ID",
+      "set-by-server": true,
+      "optional": false,
+      "type": "Number"
+    },
+    {
+      "id": "cytomine_id_images",
+      "value-key": "[@ID]",
+      "command-line-flag": "--@id",
+      "name": "Cytomine Image IDs",
+      "description": "Images on which to classify objects",
+      "optional": false,
+      "type": "ListDomain",
+      "uri": "/api/project/$currentProject$/imageinstance.json",
+      "uri-print-attribute": "instanceFilename",
+      "uri-sort-attribute": "created"
+    },
+    {
+      "id": "cytomine_id_annotation_job",
+      "description": "Job ID of CellDetect Stardist analysis which annotations to be classified",
+      "set-by-server": false,
+      "value-key": "[@ID]",
+      "optional": false,      
+      "type": "Domain",
+      "uri": "/api/job.json?project=$currentProject$",
+      "uri-sort-attribute": "softwareDate",
+      "uri-print-attribute": "softwareName",
+      "command-line-flag": "--@id"
+    },
+    {
+      "id": "cytomine_id_user_job",
+      "value-key": "[@ID]",
+      "command-line-flag": "--@id",
+      "name": "Cytomine User ID for the Annotation Job",
+      "description": "User ID of CellDetect Stardist job analysis",
+      "optional": false,
+      "type": "ListDomain",
+      "uri": "/api/userJob.json?project=$currentProject$",
+      "uri-sort-attribute": "softwareDate",
+      "uri-print-attribute": "softwareName"
+    },
+    {
+      "id": "cytomine_id_c0_term",
+      "value-key": "[@ID]",
+      "command-line-flag": "--@id",
+      "name": "Cytomine class0 (negative) cell term ID",
+      "description": "Ontology term ID for the cells that will be classified as Class 0 (Negative)",
+      "optional": false,
+      "type": "Domain",
+      "uri": "/api/ontology/$currentOntology$/term.json",
+      "uri-print-attribute": "name",
+      "uri-sort-attribute": "name"
+    },
+    {
+      "id": "cytomine_id_c1_term",
+      "value-key": "[@ID]",
+      "command-line-flag": "--@id",
+      "name": "Cytomine class1 (weak) cell term ID",
+      "description": "Ontology term ID for the cells that will be classified as Class 1 (Positive-Weak)",
+      "optional": false,
+      "type": "Domain",
+      "uri": "/api/ontology/$currentOntology$/term.json",
+      "uri-print-attribute": "name",
+      "uri-sort-attribute": "name"
+    },
+    {
+      "id": "cytomine_id_c2_term",
+      "value-key": "[@ID]",
+      "command-line-flag": "--@id",
+      "name": "Cytomine class2 (moderate) cell term ID",
+      "description": "Ontology term ID for the cells that will be classified as Class 2 (Positive-Moderate)",
+      "optional": false,
+      "type": "Domain",
+      "uri": "/api/ontology/$currentOntology$/term.json",
+      "uri-print-attribute": "name",
+      "uri-sort-attribute": "name"
+    },
+    {
+      "id": "cytomine_id_c3_term",
+      "value-key": "[@ID]",
+      "command-line-flag": "--@id",
+      "name": "Cytomine class3 (strong) cell term ID",
+      "description": "Ontology term ID for the cells that will be classified as Class 3 (Positive-Strong)",
+      "optional": false,
+      "type": "Domain",
+      "uri": "/api/ontology/$currentOntology$/term.json",
+      "uri-print-attribute": "name",
+      "uri-sort-attribute": "name"
+    },
+    {
+        "id": "cytomine_th_set",
+        "value-key": "@ID",
+        "command-line-flag": "--@id",
+        "name": "Threshold set for hue and value",
+        "description": "1: mod-th, 2: default-th",
+        "default-value": 1,
+        "set-by-server": false,
+        "optional": false,
+        "type": "Number"
+    },
+    {
+        "id": "cytomine_roi_type",
+        "value-key": "@ID",
+        "command-line-flag": "--@id",
+        "name": "ROI type to be analyzed (alpha or crop)",
+        "description": "1: alpha, 2: crop",
+        "default-value": 1,
+        "set-by-server": false,
+        "optional": false,
+        "type": "Number"
+    }       
+  ],
+
+  "schema-version": "cytomine-0.1"
+}
