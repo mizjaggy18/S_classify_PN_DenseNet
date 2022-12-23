@@ -59,6 +59,7 @@ def run(cyto_job, parameters):
     project = cyto_job.project
     threshold_set=parameters.cytomine_th_set
     roi_type=parameters.cytomine_roi_type
+    modeltype=parameters.cytomine_model
 
     terms = TermCollection().fetch_with_filter("project", parameters.cytomine_id_project)
     job.update(status=Job.RUNNING, progress=1, statusComment="Terms collected...")
@@ -67,7 +68,12 @@ def run(cyto_job, parameters):
     start_time=time.time()
 
     # ----- load network ----
-    modelname = "/models/3333nuclei_densenet_best_model_100ep.pth"
+    if modeltype==1: #3k
+        modelname = "/models/3333nuclei_densenet_best_model_100ep.pth"
+    elif modeltype==2: #22k
+        modelname = "/models/22k_nuclei_densenet21_best_model_100ep.pth"
+                    
+    
     gpuid = 0
 
     device = torch.device(gpuid if gpuid!=-2 and torch.cuda.is_available() else 'cpu')
